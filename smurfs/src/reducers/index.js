@@ -27,7 +27,7 @@ export default (state = initialState, action) => {
       return { ...state, addingSmurf: true };
     
     case FETCH_FAILED:
-      return { ...state, addingSmurf: false, fetchingSmurfs: false };
+      return { ...state, addingSmurf: false, fetchingSmurfs: false, error: action.payload };
 
     default:
       return state;
