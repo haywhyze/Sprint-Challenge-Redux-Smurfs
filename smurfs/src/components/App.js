@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+import styled from 'styled-components';
 import { fetchSmurfs, addOneSmurf } from '../actions';
 import './App.css';
-/*
- to wire this component up you're going to need a few things.
- I'll let you do this part on your own. 
- Just remember, `how do I `connect` my components to redux?`
- `How do I ensure that my component links the state to props?`
- */
+import Smurfs from './SmurfsList';
+import SmurfForm from './SmurfForm';
+
+const StyledNavLinks = styled(NavLink)`
+  padding: 1rem 2rem;
+  margin: .5rem;
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  background: rgb(161,21,29);
+`;
+
 export class App extends Component {
 
   componentDidMount() {
@@ -15,13 +23,36 @@ export class App extends Component {
   }
 
   render() {
+    const { smurfs, fetchingSmurfs, addingSmurf, addOneSmurf } = this.props;
     return (
-      <div className="App">
-        <h1>SMURFS! 2.0 W/ Redux</h1>
-        <div>Welcome to your Redux version of Smurfs!</div>
-        <div>Start inside of your `src/index.js` file!</div>
-        <div>Have fun!</div>
-      </div>
+      <Router>
+        <div style={{ textAlign: 'center' }}>
+        <StyledNavLinks to='/'>Smurfs</StyledNavLinks>
+        <StyledNavLinks to='/smurf-form'>Add New Smurfs</StyledNavLinks>
+        <Route
+          exact
+          path={['/', '/smurfs']}
+          render={(props => 
+            <Smurfs 
+              {...props} 
+              smurfs={smurfs}
+              fetchSmurfs={fetchingSmurfs} 
+            />)
+          }
+        />
+        <Route
+          exact
+          path='/smurf-form'
+          render={(props => 
+            <SmurfForm 
+              {...props} 
+              addSmurf={addOneSmurf}
+              addingSmurf={addingSmurf} 
+            />)
+          }
+        />
+        </div>
+      </Router>
     );
   }
 }
@@ -29,7 +60,7 @@ export class App extends Component {
 const mapStateToProps = (state) => {
   return {
     smurfs: state.smurfs,
-    fetchingSmurfs: state.smurfs,
+    fetchingSmurfs: state.fetchingSmurfs,
     addingSmurf: state.addingSmurf,
     error: state.error,
   };
