@@ -15,7 +15,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_SMURF_SUCCESS:
-      return { ...state, smurfs: state.smurfs.concat(action.payload), addingSmurf: false };
+      return { ...state, smurfs: action.payload, addingSmurf: false };
 
     case GET_SMURFS_SUCCESS:
       return { ...state, smurfs: action.payload, fetchingSmurfs: false };
